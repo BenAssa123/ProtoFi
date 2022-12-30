@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="21512" systemVersion="22A400" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="Item" representedClassName="Item" syncable="YES" codeGenerationType="class">
+        <attribute name="isdone" optional="YES" attributeType="Boolean" defaultValueString="NO" usesScalarValueType="YES"/>
+        <attribute name="parent" optional="YES" attributeType="String"/>
+        <attribute name="stepcomment" optional="YES" attributeType="String"/>
+        <attribute name="stepdescription" optional="YES" attributeType="String"/>
+        <attribute name="stepnumber" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="timer" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="timestamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="parentProtocol_" optional="YES" maxCount="1" deletionRule="Cascade" destinationEntity="ProtocolPook" inverseName="steps_" inverseEntity="ProtocolPook"/>
+    </entity>
+    <entity name="ProtocolPook" representedClassName="ProtocolPook" syncable="YES" codeGenerationType="class">
+        <attribute name="generalDescription" optional="YES" attributeType="String"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="name" optional="YES" attributeType="String"/>
+        <attribute name="timeStamp" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <relationship name="steps_" optional="YES" toMany="YES" deletionRule="Cascade" destinationEntity="Item" inverseName="parentProtocol_" inverseEntity="Item"/>
+    </entity>
+    <entity name="SavedRuns" representedClassName="SavedRuns" syncable="YES" codeGenerationType="class">
+        <attribute name="enddate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="project" optional="YES" attributeType="String"/>
+        <attribute name="protName" optional="YES" attributeType="String"/>
+        <attribute name="startdate" optional="YES" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="usercomment" optional="YES" attributeType="String"/>
+        <relationship name="userRunComments_" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="UserRunningStepComment" inverseName="savedRun_" inverseEntity="UserRunningStepComment"/>
+    </entity>
+    <entity name="UserRunningStepComment" representedClassName="UserRunningStepComment" syncable="YES" codeGenerationType="class">
+        <attribute name="protocolid" optional="YES" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="stepruncomment" optional="YES" attributeType="String"/>
+        <relationship name="savedRun_" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="SavedRuns" inverseName="userRunComments_" inverseEntity="SavedRuns"/>
+    </entity>
+    <configuration name="Configuration" usedWithCloudKit="YES">
+        <memberEntity name="Item"/>
+        <memberEntity name="ProtocolPook"/>
+    </configuration>
+</model>
