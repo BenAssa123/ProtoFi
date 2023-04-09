@@ -10,7 +10,7 @@ import SwiftUI
 
 class TimerModel: ObservableObject {
     @EnvironmentObject var lnManager: LocalNotificationManager
-
+    // TODO: clean this code
     //let startDate: Date = Date()
     //var currentDate: Date = Date()
     var isRunning: Bool = false
