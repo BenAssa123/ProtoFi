@@ -11,10 +11,11 @@ struct ContentView: View {
     
     @State var changeUserShowing: Bool = false
     
-    let label: String = "Pook"
+    let loginLabel: String = "Login"
+    let enterLabel: String = "Enter"
     
-    @State var isLoggedIn: Bool = false
-    @State var whatsNew:Bool = false
+    @State var isLoggedIn: Bool = false  // TODO: connect to login state
+    @State var showWhatsNew: Bool = false
     
     var body: some View {
             NavigationView {
@@ -25,14 +26,8 @@ struct ContentView: View {
                             Text("ProtoFi")
                                 .bold()
                                 .font(.largeTitle)
-                                //.padding(.horizontal)
                                 .padding()
                                 .cornerRadius(8)
-                            
-//                            Image("pngegg-7")
-//                                .resizable()
-//                                .scaledToFit()
-//                                .frame(width: 60, height: 60, alignment: .center)
                         }
                         Text("Advancing Science One Step at a Time")
                             .bold()
@@ -41,8 +36,7 @@ struct ContentView: View {
                     }
                     .padding()
                     .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                    .background(.orange.opacity(0.2))
-                    //.cornerRadius(8)
+                    .background(.green.opacity(0.125))
 
                 Spacer(minLength: 30)
                 
@@ -51,12 +45,6 @@ struct ContentView: View {
                     VStack {
                         
                 Spacer(minLength: 200)
-                        
-                        if isLoggedIn == true {
-                        } //: if
-                        else {
-                            //Button(action: {
-                                //isLoggedIn.toggle()
                             ZStack {
                                 Image("pngegg-2")
                                     .resizable()
@@ -64,52 +52,50 @@ struct ContentView: View {
                                     .frame(width: 300, height: 300)
                                     .opacity(0.3)
                                 VStack {
-                                    NavigationLink("Log In", destination: ProtocolListView())
+                                    NavigationLink(isLoggedIn ? enterLabel : loginLabel, destination: ProtocolListView())  // TODO: only navigate to protocol list view if logged in (check user defaults)
                                     .navigationBarHidden(true)
                                     .font(.largeTitle)
                                     .padding()
                                     .padding(.horizontal)
-                                    //.padding(.vertical)
                                     .padding(.horizontal)
-                                    //.buttonStyle(.borderedProminent)
-                                    .background(.blue.opacity(0.9))
-                                    .cornerRadius(12)
+                                    .background(.blue.opacity(0.975))
+                                    .cornerRadius(10)
                                     .foregroundColor(.black)
                                     
                                     Button(action: {
+                                        isLoggedIn = false
                                         changeUserShowing.toggle()
                                     }) {
                                         Text("Switch User")
-                                            .foregroundColor(.blue)
+                                            .foregroundColor(.black)
                                     }
                                     .buttonStyle(.bordered)
                                     .padding(.top)
-                                }
-                                
-                            }
+                                } //: VSTACK
+                            }//: ZSTACK
                             Spacer(minLength: 60)
                             
-                            Text("Whats new?")
+                            Text("Whats New")
                                 .padding()
                                 .cornerRadius(8)
-                                .foregroundColor(.mint)
+                                .foregroundColor(.gray)
                                 .onTapGesture {
-                                    whatsNew.toggle()
+                                    showWhatsNew = true
                                 }
                             
                             Spacer()
-                        } //: else
+                            
                         } //:Vstack
                 .frame(height: 200, alignment: .center)
                 .padding(.vertical)
                 .padding(.top)
                 .opacity(0.9)
                 } //: Scroll View
-                .sheet(isPresented: $whatsNew, content: {
+                .sheet(isPresented: $showWhatsNew, content: {
                     WhatsNewView()
                 })
                 .sheet(isPresented: $changeUserShowing, content: {
-                    ChangeUserView()
+                    ChangeUserView(isLoggedIn: isLoggedIn)
                 })
             } //: Vstack
             .background()
