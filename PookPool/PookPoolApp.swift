@@ -18,6 +18,7 @@ struct PookPoolApp: App {
     @StateObject var photoPicker = PhotoPickerManager()
     @StateObject var recognizeTextManager = RecognizeTextManager()
     @StateObject var calculator = Calculator()
+    @StateObject var userManager = UserManager()
     
     var body: some Scene {
         WindowGroup {
@@ -33,6 +34,7 @@ struct PookPoolApp: App {
                 }
                 .environmentObject(recognizeTextManager)
                 .environmentObject(calculator)
+                .environmentObject(userManager)
         }
     }
 }

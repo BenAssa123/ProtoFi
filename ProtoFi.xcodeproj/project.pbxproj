@@ -53,6 +53,7 @@
 		16F2A95228B018D1001131C4 /* Reagent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F2A95128B018D1001131C4 /* Reagent.swift */; };
 		16F2A95428B01B12001131C4 /* Calculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F2A95328B01B12001131C4 /* Calculator.swift */; };
 		16F2A95628B0F842001131C4 /* MyHomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16F2A95528B0F842001131C4 /* MyHomeView.swift */; };
+		16FC00C929E701A000B2F237 /* UserManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 16FC00C829E701A000B2F237 /* UserManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -105,6 +106,7 @@
 		16F2A95128B018D1001131C4 /* Reagent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reagent.swift; sourceTree = "<group>"; };
 		16F2A95328B01B12001131C4 /* Calculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Calculator.swift; sourceTree = "<group>"; };
 		16F2A95528B0F842001131C4 /* MyHomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyHomeView.swift; sourceTree = "<group>"; };
+		16FC00C829E701A000B2F237 /* UserManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -249,6 +251,7 @@
 				16E188EA289AF97100C98545 /* ImagePicker.swift */,
 				165EC59528A11CF7001CEFBC /* RecognizeTextManager.swift */,
 				16F2A95328B01B12001131C4 /* Calculator.swift */,
+				16FC00C829E701A000B2F237 /* UserManager.swift */,
 			);
 			path = "View Models";
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				160955B2286362FE006E3E99 /* SettingsView.swift in Sources */,
 				16940003283ACB22004777FB /* AddTodoView.swift in Sources */,
 				165EC59628A11CF7001CEFBC /* RecognizeTextManager.swift in Sources */,
+				16FC00C929E701A000B2F237 /* UserManager.swift in Sources */,
 				16E188E7289AC88500C98545 /* PhotoPickerManager.swift in Sources */,
 				16940005283C0EA7004777FB /* StepTabView.swift in Sources */,
 				160955B028635CA9006E3E99 /* RunView.swift in Sources */,

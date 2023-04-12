@@ -9,6 +9,8 @@ import SwiftUI
 
 struct ContentView: View {
     
+    @EnvironmentObject var userManager: UserManager
+    
     @State var changeUserShowing: Bool = false
     
     let loginLabel: String = "Login"
@@ -52,25 +54,37 @@ struct ContentView: View {
                                     .frame(width: 300, height: 300)
                                     .opacity(0.3)
                                 VStack {
-                                    NavigationLink(isLoggedIn ? enterLabel : loginLabel, destination: ProtocolListView())  // TODO: only navigate to protocol list view if logged in (check user defaults)
-                                    .navigationBarHidden(true)
-                                    .font(.largeTitle)
-                                    .padding()
-                                    .padding(.horizontal)
-                                    .padding(.horizontal)
-                                    .background(.blue.opacity(0.975))
-                                    .cornerRadius(10)
-                                    .foregroundColor(.black)
-                                    
-                                    Button(action: {
-                                        isLoggedIn = false
-                                        changeUserShowing.toggle()
-                                    }) {
-                                        Text("Switch User")
-                                            .foregroundColor(.black)
+                                    if userManager.userID.value(forKey: "UserName") != nil { //  if yes then show change user button:
+                                        NavigationLink(enterLabel, destination: ProtocolListView())  // TODO: only navigate to protocol list view if logged in (check user defaults)
+                                        .navigationBarHidden(true)
+                                        .font(.largeTitle)
+                                        .padding()
+                                        .padding(.horizontal)
+                                        .padding(.horizontal)
+                                        .background(.blue.opacity(0.975))
+                                        .cornerRadius(10)
+                                        .foregroundColor(.black)
+                                        
+                                        Button(action: {
+                                            isLoggedIn = true
+                                            changeUserShowing.toggle()
+                                        }) {
+                                            Text("Switch User")
+                                                .foregroundColor(.black)
+                                        }
+                                        .buttonStyle(.bordered)
+                                        .padding(.top)
+                                    } else { // if no one is logged show only login button and navigate to ChangeUserView for log in
+                                        NavigationLink(loginLabel, destination: ChangeUserView(isLoggedIn: false))
+                                        .navigationBarHidden(true)
+                                        .font(.largeTitle)
+                                        .padding()
+                                        .padding(.horizontal)
+                                        .padding(.horizontal)
+                                        .background(.blue.opacity(0.975))
+                                        .cornerRadius(10)
+                                        .foregroundColor(.black)
                                     }
-                                    .buttonStyle(.bordered)
-                                    .padding(.top)
                                 } //: VSTACK
                             }//: ZSTACK
                             Spacer(minLength: 60)

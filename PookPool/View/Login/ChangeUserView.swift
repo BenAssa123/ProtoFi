@@ -10,8 +10,9 @@ import SwiftUI
 struct ChangeUserView: View {
     @Environment(\.presentationMode) var presentationMode
     
-    @State var isLoggedIn: Bool // TODO: change to user defaults to save state
-    
+    @EnvironmentObject var userManager: UserManager
+
+    @State var isLoggedIn: Bool // TODO: change to something that looks at user defaults to save state
     @State var newUserName: String = ""
     @State var newUserPassword: String = ""
     
@@ -40,7 +41,8 @@ struct ChangeUserView: View {
             Spacer()
             
             Button(action: {
-                isLoggedIn = true  // TODO: change the login state in user defaults
+                // TODO: change the login state in user defaults
+                userManager.setUserID(name: newUserName, password: newUserPassword)
                 presentationMode.wrappedValue.dismiss()
             }) {
                 Text("Log In")
@@ -54,7 +56,10 @@ struct ChangeUserView: View {
             Spacer()
             
             Button(action: {
-                presentationMode.wrappedValue.dismiss()
+                userManager.setUserID(name: newUserName, password: newUserPassword)
+                if isLoggedIn {
+                    presentationMode.wrappedValue.dismiss()
+                }
             }) {
                 Text("Change User")
                     .padding()
