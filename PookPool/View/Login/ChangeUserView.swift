@@ -30,7 +30,8 @@ struct ChangeUserView: View {
                 .background(.quaternary)
                 .cornerRadius(8)
                 .padding(.top)
-            TextField("Password", text: $newUserPassword)
+            
+            SecureField("Password", text: $newUserPassword)
                 .font(.title3)
                 .padding(.horizontal)
                 .padding()
@@ -40,36 +41,42 @@ struct ChangeUserView: View {
             
             Spacer()
             
-            Button(action: {
-                // TODO: change the login state in user defaults
-                userManager.setUserID(name: newUserName, password: newUserPassword)
-                presentationMode.wrappedValue.dismiss()
-            }) {
-                Text("Log In")
-                    .padding()
-                    .font(.title)
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-            }
-            .buttonStyle(.borderedProminent)
-            .padding(.horizontal)
-            
-            Spacer()
-            
-            Button(action: {
-                userManager.setUserID(name: newUserName, password: newUserPassword)
-                if isLoggedIn {
-                    presentationMode.wrappedValue.dismiss()
+            if userManager.isLoggedIn == false {
+                Button(action: {
+                    if  newUserPassword.count > 0 {
+                        userManager.setUserID(name: newUserName, password: newUserPassword)
+                        presentationMode.wrappedValue.dismiss()
+                    }
+                }) {
+                    Text("Log In")
+                        .padding()
+                        .font(.title)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
                 }
-            }) {
-                Text("Change User")
-                    .padding()
-                    .font(.title)
-                    .foregroundColor(.black)
-                    .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
-                    .background(.mint)
+                .buttonStyle(.borderedProminent)
+                .padding(.horizontal)
+                
+                Spacer()
+            } else {
+                Button(action: {
+                    if  newUserPassword.count > 0 {
+                        userManager.setUserID(name: newUserName, password: newUserPassword)
+                        if isLoggedIn {
+                            presentationMode.wrappedValue.dismiss()
+                        }
+                    }
+                    
+                }) {
+                    Text("Change User")
+                        .padding()
+                        .font(.title)
+                        .foregroundColor(.black)
+                        .frame(minWidth: 0, maxWidth: .infinity, alignment: .center)
+                        .background(.mint)
+                }
+                .cornerRadius(8)
+                .padding(.horizontal)
             }
-            .cornerRadius(8)
-            .padding(.horizontal)
             // TODO: Make Login Real
         } //: VStack
         

@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @EnvironmentObject var userManager: UserManager
+    @ObservedObject var userManager = UserManager()
     
     @State var changeUserShowing: Bool = false
     
@@ -54,7 +54,11 @@ struct ContentView: View {
                                     .frame(width: 300, height: 300)
                                     .opacity(0.3)
                                 VStack {
+                                     // TODO: check user login status with function in user manager
                                     if userManager.userID.value(forKey: "UserName") != nil { //  if yes then show change user button:
+                                        
+                                        Text(userManager.userName)
+                                        
                                         NavigationLink(enterLabel, destination: ProtocolListView())  // TODO: only navigate to protocol list view if logged in (check user defaults)
                                         .navigationBarHidden(true)
                                         .font(.largeTitle)
@@ -75,7 +79,7 @@ struct ContentView: View {
                                         .buttonStyle(.bordered)
                                         .padding(.top)
                                     } else { // if no one is logged show only login button and navigate to ChangeUserView for log in
-                                        NavigationLink(loginLabel, destination: ChangeUserView(isLoggedIn: false))
+                                        NavigationLink(loginLabel, destination: ChangeUserView(isLoggedIn: userManager.isLoggedIn).environmentObject(userManager))
                                         .navigationBarHidden(true)
                                         .font(.largeTitle)
                                         .padding()
@@ -109,7 +113,7 @@ struct ContentView: View {
                     WhatsNewView()
                 })
                 .sheet(isPresented: $changeUserShowing, content: {
-                    ChangeUserView(isLoggedIn: isLoggedIn)
+                    ChangeUserView(isLoggedIn: userManager.isLoggedIn).environmentObject(userManager)
                 })
             } //: Vstack
             .background()
