@@ -29,7 +29,7 @@ struct TimerView: View {
     
     var body: some View {
         VStack {
-            if timerTime >= 0 {
+            if timerTime >= 0 {  // TODO: change to just show the time and compute that outside of here
                 Text(started ? "\(Int(stopWatch.formatTime(timerTime:(stopWatch.startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSinceNow +  StartTimeTimer)[2].rounded())):\(Int(stopWatch.formatTime(timerTime:(stopWatch.startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSinceNow +  StartTimeTimer)[1].rounded())):\(Int(stopWatch.formatTime(timerTime:(stopWatch.startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSinceNow + StartTimeTimer)[0].rounded()))"
                      : "\(Int(stopWatch.formatTime(timerTime:StartTimeTimer)[2].rounded())):\(Int(stopWatch.formatTime(timerTime: StartTimeTimer)[1].rounded())):\(Int(stopWatch.formatTime(timerTime: StartTimeTimer)[0].rounded()))")
                     .font(.system(size: 30, weight: .heavy, design: .default))
@@ -38,7 +38,7 @@ struct TimerView: View {
                     .cornerRadius(30)
                     .animation(.interactiveSpring(), value: isRunning)
                     .padding(.bottom, 10)
-            } else {
+            } else if timerTime < 0 {
                 // TODO: Save how much overtime happened in this step to documentation
                 Text(started ? "\(Int(0))" : "\(Int(StartTimeTimer.rounded()))")
                     .font(.system(size: 60, weight: .heavy, design: .default))
@@ -53,10 +53,10 @@ struct TimerView: View {
                 // MARK: Start/Stop Button
                 Button(action: {
                     if (protoFi.protocolRunning.value(forKey: "isPookRunning") != nil) && (protoFi.protocolRunning.value(forKey: "PookID") != nil) {
-                        if stopWatch.isRunning || stopWatch.isPaused { // check if timer working
+                        if stopWatch.isRunning || stopWatch.isPaused { // if timer already working
                             if stopWatch.stepNumber == step.stepnumber { // only allow access if it is the step that  initiated the timer
                                 if isRunning == false {
-                                    stopWatch.start(time: StartTimeTimer, stepNumber: step.stepnumber, parent: step.parent ?? "")
+                                    stopWatch.start_timer(time: StartTimeTimer, stepNumber: step.stepnumber, parent: step.parent!)
                                     //timerTime = stopWatch.timeRemainingByDate // changed this from timeRemaining
                                     timerTime = (stopWatch.startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSinceNow + StartTimeTimer
                                     isRunning = stopWatch.isRunning
@@ -69,27 +69,28 @@ struct TimerView: View {
                                         } //: Set Notification
                                     } //: if
                                 } else {
-                                    stopWatch.pause()
+                                    stopWatch.pause_timer()
                                     isRunning = stopWatch.isRunning
                                     self.hapticImpact.impactOccurred()
                                     lnManager.clearRequests() // Remove notification
                                 }
                             }
                         } else {
-                            if isRunning == false {
-                                stopWatch.start(time: StartTimeTimer, stepNumber: step.stepnumber, parent: step.parent ?? "")
+                            if isRunning == false { // if it isn't runnig
+                                stopWatch.start_timer(time: StartTimeTimer, stepNumber: step.stepnumber, parent: step.parent ?? "")
                                 timerTime = stopWatch.timeRemaining
                                 isRunning = stopWatch.isRunning
                                 started = true
                                 self.hapticImpact.impactOccurred()
                                 if timerTime > 0 {
-                                    Task { // Set Notification
+                                    Task { // Set Notification -
+                                    // TODO: put thin into view model instead
                                         let localNotification = LocalNotification(identifier: UUID().uuidString, title: "Timer Done!", body: "After \(Int(timerTime.rounded())) seconds in Step \(step.stepnumber)", timeInterval: timerTime, repeats: false)
                                         await lnManager.schedule(localNotification: localNotification)
                                     } //: Set Notification
                                 } //: if
                             } else {
-                                stopWatch.pause()
+                                stopWatch.pause_timer()
                                 isRunning = stopWatch.isRunning
                                 lnManager.clearRequests() // Remove notification
                             }
@@ -117,7 +118,7 @@ struct TimerView: View {
                 // MARK: Reset Button
                 if isRunning == false && started {
                     Button(action: {
-                        stopWatch.stop()
+                        stopWatch.stop_timer()
                         started = false
                         lnManager.clearRequests() // Remove notification
                     }, label: {

@@ -12,7 +12,7 @@ import CoreData
 class StopWatchManager: ObservableObject {
     
     var secondsElapsed: Int = 0
-    var timer: Timer = Timer()
+//    var timer: Timer = Timer()
     
     @Published var isRunning: Bool = false
     @Published var isPaused: Bool = false
@@ -26,48 +26,49 @@ class StopWatchManager: ObservableObject {
     @Published var startDate: UserDefaults = UserDefaults.init()
     @Published var pauseDate: UserDefaults = UserDefaults.init()
 
-    func start(time: Double, stepNumber: Int64, parent: String) {
-        timerDone = false
-        isRunning = true
-        if !isPaused {
+    func start_timer(time: Double, stepNumber: Int64, parent: String) {
+        self.timerDone = false
+        self.isRunning = true
+        if isPaused == false {
             self.stepNumber = stepNumber
             self.parent = parent
             timeRemaining = time
             startDate.set(Date(), forKey: "TimerStartDate")
-        } else { // if timer was paused substract the time paused form initial time (resume after pause):
+        } else if isPaused == true { // if timer was paused substract the time paused form initial time (resume after pause):
             let deltaTime = (startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSince(pauseDate.value(forKey: "TimerPauseDate") as! Date)
             
             startDate.set(Date().addingTimeInterval(_: deltaTime), forKey: "TimerStartDate")
             pauseDate.removeObject(forKey: "TimerPauseDate")
+            isPaused = false
         }
-        isPaused = false
         // timer is not used when date is used
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            self.secondsElapsed += 1
-            self.timeRemaining = time - Double(self.secondsElapsed)
-            if self.timeRemaining <= 0 {
-                self.timeRemaining = 0
-                self.isRunning = false
-                self.timerDone = true
-            }
-        }
+//        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
+//            self.secondsElapsed += 1
+//            self.timeRemaining = time - Double(self.secondsElapsed)
+//            if self.timeRemaining <= 0 {
+//                self.timeRemaining = 0
+//                self.isRunning = false
+//                self.timerDone = true
+//            }
+//        }
     }
 
-    func stop() {
+    func stop_timer() {
         isRunning = false
         isPaused = false
-        timer.invalidate()
+//        timer.invalidate()
         secondsElapsed = 0
         timeRemaining = 0
         startDate.removeObject(forKey: "TimerStartDate")
         pauseDate.removeObject(forKey: "TimerPauseDate")
+        timerDone = true
     }
 
-    func pause() {
+    func pause_timer() {
         isRunning = false
         isPaused = true
         pauseDate.set(Date(), forKey: "TimerPauseDate")
-        timer.invalidate()
+//        timer.invalidate()
     }
     
     func formatTime(timerTime: Double) -> [Double] {

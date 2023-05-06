@@ -17,12 +17,12 @@ struct ProtocolListView: View {
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \ProtocolPook.name, ascending: true)],
-        animation: .default)
+        animation: .default) // getting all protocols arranged by name from core data
     
-    private var protocols: FetchedResults<ProtocolPook>
+    private var protocols: FetchedResults<ProtocolPook>  // saving fetched protocols in var
     
-    @State private var isPresented: Bool = false
-    @State private var isEditing: Bool = false
+    @State private var isPresented: Bool = false  // for sheet
+    @State private var isEditing: Bool = false  // for deleting protocols
     
     // MARK: Body
     var body: some View {
@@ -32,11 +32,12 @@ struct ProtocolListView: View {
                     Text("My Protocols")
                         .font(.title)
                         .underline()
+                    // MARK: Protocol List
                     List {
                         ForEach(protocols) { protopook in
                             NavigationLink {
                                 // go to protocol view:
-                                ProtocolView(isDone: Array(repeating: Bool.init(), count: 1000 + Item.getSteps(protopook.name!, context: viewContext).count), protocolStarted: (protoFi.protocolName.value(forKey: "\(protopook.name!)") != nil ? true : false), isProtocolRunning: (protoFi.protocolName.value(forKey: "\(protopook.name!)") != nil ? true : false), protocolName: protopook.name!, proto: protopook)
+                                ProtocolView(isDone: Array(repeating: Bool.init(), count: 1000 + Item.getSteps(protopook.name!, context: viewContext).count), protocolStarted: ((protoFi.protocolName.value(forKey: "\(protopook.name!)") != nil) ? true : false), isProtocolRunning: (protoFi.protocolName.value(forKey: "\(protopook.name!)") != nil ? true : false), protocolName: protopook.name!, proto: protopook)
                                     .navigationBarTitleDisplayMode(.inline)
                             } label: {
                                 HStack {

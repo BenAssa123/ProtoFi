@@ -10,20 +10,19 @@ import CoreData
 
 struct ProtocolView: View {
     //MARK: Properties
-    @Environment(\.managedObjectContext) private var viewContext
-    @EnvironmentObject var stopWatch: StopWatchManager
-    @EnvironmentObject var protoFi: ProtoFi
+    @Environment(\.managedObjectContext) private var viewContext  // for sheet
+    @EnvironmentObject var stopWatch: StopWatchManager  // for timer
+    @EnvironmentObject var protoFi: ProtoFi  // for changing protocols
     
-    
-    @State private var isPresented:Bool = false
+    @State private var isPresented: Bool = false
     @State var protocolCompleted: Bool = false
     @State var protocolCompletedYes: Bool = false
     @State var isNavigating: Bool = false
     
     var hapticImpact = UIImpactFeedbackGenerator(style: .heavy)
     
-    @State var isDone: [Bool]
-    @State var protocolStarted: Bool //= false
+    @State var isDone: [Bool]  // for getting and setting the steps that were done on not
+    @State var protocolStarted: Bool // for making sure that the correct protocol is ongoing - each protocol name can be ongoing
     @State var stepComments: [String] = []
     
     @State var isProtocolRunning: Bool //= false
@@ -78,7 +77,7 @@ struct ProtocolView: View {
             } //: if
             }
                 
-            if stopWatch.isRunning {
+            if stopWatch.isRunning {  // TODO: change this to view that isn't shared with others
                 IsTimerRunningView()
             }
                 List {
@@ -200,6 +199,7 @@ struct ProtocolView: View {
             } else if (protoFi.protocolRunning.value(forKey: "isPookRunning") == nil) && (protoFi.protocolName.value(forKey: "\(protocolName)") == nil) {
                 
                 // MARK: Steps from Photo
+                // TODO: put this button in separete view
                 Button(action: {
                     photoPickerShowing.toggle()
                 }) {
@@ -219,13 +219,11 @@ struct ProtocolView: View {
                 .buttonStyle(.borderless)
                 
                 // MARK: Start Run
+                // TODO: put start run button in separate view
                 if Item.getSteps(protocolName, context: viewContext).count > 0 {
                     Button(action: {   // Start documentation and set an id for the saved run:
                         addProject.toggle()
-                        
                         protocolStarted = true
-    //                    SavedRuns.startRun(protocolName: protocolName, ID: ID, project: projectName, context: viewContext)
-    //                    protoFi.startProtocol(Id: ID, name: protocolName)
                         }, label: {
                                 Text("Start Protocol")
                                         .bold()
@@ -245,10 +243,9 @@ struct ProtocolView: View {
                             title: Text("Add to Project"),
                         message: Text("Do you want to add a Project Name to this run?"),
                             primaryButton: .default(Text("Add Project Name"), action: {
-                                
-                                addProjectNameSheet.toggle()
+                                addProjectNameSheet.toggle()  // open sheet
                             }),
-                            secondaryButton: .default(Text("Nope"), action: { // just save run without project name
+                            secondaryButton: .default(Text("Nope"), action: { // start run without project name
                                 SavedRuns.startRun(protocolName: protocolName, ID: ID, project: projectName, context: viewContext)
                                 protoFi.startProtocol(Id: ID, name: protocolName)
                             })
@@ -259,7 +256,7 @@ struct ProtocolView: View {
                 } //: if
             } //: else
         } //: Vstack
-        .sheet(isPresented: $photoPickerShowing, content: { RecognizeTextView(parentProtocol: proto) })
+        .sheet(isPresented: $photoPickerShowing, content: { RecognizeTextView(parentProtocol: proto) })  // pick photo for inserting steps
     } //: Body
 
     private func deleteItems(offsets: IndexSet) {

@@ -17,9 +17,9 @@ struct StepTabView: View {
     @State var firstStep: Int // get the first step to show
     
     @State var timerTime: [Double]
-    @State var runningTime: Double = 0
-    @State var initiatedTimerStep: Int = 0
-    @State var timerRuning: Bool = false
+    //@State var runningTime: Double = 0
+    //@State var initiatedTimerStep: Int = 0
+    //@State var timerRuning: Bool = false
     
     @State var isEditing: Bool = false
     @State var errorShowing: Bool = false

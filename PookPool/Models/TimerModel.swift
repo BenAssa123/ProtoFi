@@ -23,7 +23,7 @@ class TimerModel: ObservableObject {
       //let timer = Timer.publish(every: 1, on: .main, in: .common).autoconnect()
       let startDate = Date()
       isRunning = true
-        let timeRemainig = totalTime - Double(startDate.timeIntervalSinceNow)
+        var timeRemainig = totalTime - Double(startDate.timeIntervalSinceNow)
 
         // send notification:
        let localNotification = LocalNotification(identifier: UUID().uuidString, title: "Timer Done!", body: "After \(Int(totalTime.rounded())) seconds", timeInterval: timeRemainig, repeats: false)
