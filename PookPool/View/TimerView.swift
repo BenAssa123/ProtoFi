@@ -23,6 +23,8 @@ struct TimerView: View {
     @State var isRunning: Bool = false
     @State var started: Bool = false // if timer was initialized
     
+    @State var isPulsating: Bool = false
+    
     @State var alertIsShowing: Bool = false
     
     let step: Item
@@ -32,10 +34,16 @@ struct TimerView: View {
             if timerTime >= 0 {  // TODO: change to just show the time and compute that outside of here
                 Text(started ? "\(Int(stopWatch.formatTime(timerTime:(stopWatch.startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSinceNow +  StartTimeTimer)[2].rounded())):\(Int(stopWatch.formatTime(timerTime:(stopWatch.startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSinceNow +  StartTimeTimer)[1].rounded())):\(Int(stopWatch.formatTime(timerTime:(stopWatch.startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSinceNow + StartTimeTimer)[0].rounded()))"
                      : "\(Int(stopWatch.formatTime(timerTime:StartTimeTimer)[2].rounded())):\(Int(stopWatch.formatTime(timerTime: StartTimeTimer)[1].rounded())):\(Int(stopWatch.formatTime(timerTime: StartTimeTimer)[0].rounded()))")
-                    .font(.system(size: 30, weight: .heavy, design: .default))
-                    .frame(width: 180, height: 100, alignment: .center)
+                    .font(.system(size: 35, weight: .heavy, design: .default))
+                    .frame(width: 160, height: 100, alignment: .center)
                     .background(isRunning ? .green : .gray)
                     .cornerRadius(30)
+                    .opacity(isPulsating ? 1.0 : 0.7)
+                    .onAppear {  // TODO: do this for running timer instead of here
+                        withAnimation(Animation.easeInOut(duration: 1.5).repeatForever(autoreverses:true)) {
+                            self.isPulsating.toggle()
+                        }
+                    }
                     .animation(.interactiveSpring(), value: isRunning)
                     .padding(.bottom, 10)
             } else if timerTime < 0 {
@@ -52,7 +60,7 @@ struct TimerView: View {
             HStack {
                 // MARK: Start/Stop Button
                 Button(action: {
-                    if (protoFi.protocolRunning.value(forKey: "isPookRunning") != nil) && (protoFi.protocolRunning.value(forKey: "PookID") != nil) {
+                    if (protoFi.protocolRunning.value(forKey: "isPookRunning") != nil) && (protoFi.protocolRunning.value(forKey: "PookID") != nil) { // if timer already exist
                         if stopWatch.isRunning || stopWatch.isPaused { // if timer already working
                             if stopWatch.stepNumber == step.stepnumber { // only allow access if it is the step that  initiated the timer
                                 if isRunning == false {

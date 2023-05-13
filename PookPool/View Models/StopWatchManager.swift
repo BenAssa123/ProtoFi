@@ -26,6 +26,8 @@ class StopWatchManager: ObservableObject {
     @Published var startDate: UserDefaults = UserDefaults.init()
     @Published var pauseDate: UserDefaults = UserDefaults.init()
 
+    
+    // MARK: Start timer
     func start_timer(time: Double, stepNumber: Int64, parent: String) {
         self.timerDone = false
         self.isRunning = true
@@ -33,6 +35,7 @@ class StopWatchManager: ObservableObject {
             self.stepNumber = stepNumber
             self.parent = parent
             timeRemaining = time
+            //  TODO: add time start date per unique protocol step for multiple timers
             startDate.set(Date(), forKey: "TimerStartDate")
         } else if isPaused == true { // if timer was paused substract the time paused form initial time (resume after pause):
             let deltaTime = (startDate.value(forKey: "TimerStartDate") as! Date).timeIntervalSince(pauseDate.value(forKey: "TimerPauseDate") as! Date)
@@ -52,7 +55,7 @@ class StopWatchManager: ObservableObject {
 //            }
 //        }
     }
-
+    // MARK: Stop timer
     func stop_timer() {
         isRunning = false
         isPaused = false
@@ -63,14 +66,14 @@ class StopWatchManager: ObservableObject {
         pauseDate.removeObject(forKey: "TimerPauseDate")
         timerDone = true
     }
-
+    // MARK: Pause timer
     func pause_timer() {
         isRunning = false
         isPaused = true
         pauseDate.set(Date(), forKey: "TimerPauseDate")
 //        timer.invalidate()
     }
-    
+    // MARK: Format time
     func formatTime(timerTime: Double) -> [Double] {
         var formattedTime: [Double] = [0, 0, 0]
         let timerTimeSeconds = timerTime.truncatingRemainder(dividingBy: 60)
