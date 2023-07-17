@@ -10,7 +10,9 @@ import SwiftUI
 struct TimerView: View {
     @EnvironmentObject var lnManager: LocalNotificationManager
     //@EnvironmentObject var timer: TimerModel
-    @EnvironmentObject var stopWatch: StopWatchManager
+//    @EnvironmentObject var stopWatch: StopWatchManager
+    @StateObject var stopWatch = StopWatchManager()
+
     @EnvironmentObject var protoFi: ProtoFi
     
     //let timerCount = Timer.publish(every: 1, on: .main, in: .common).autoconnect()

@@ -12,8 +12,8 @@ struct PookPoolApp: App {
     let persistenceController = PersistenceController.shared
     @StateObject var lnManager = LocalNotificationManager()
     @StateObject var timer = TimerModel() // start counting every second. then i can calculate the difference between this number and the end date for each timer I want to set
-    // TODO: add another timer model for second timer?
-    @StateObject var stopWatch = StopWatchManager()
+    // TODO: add another timer model for second timer? probably best to start more timers in one class
+    @StateObject var stopWatch = StopWatchManager()  // is this necessary?
     @StateObject var protoFi = ProtoFi()
     @StateObject var photoPicker = PhotoPickerManager()
     @StateObject var recognizeTextManager = RecognizeTextManager()
