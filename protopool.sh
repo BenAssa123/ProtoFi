@@ -37,9 +37,9 @@ git pull origin main
 #Push the changes to the remote repository.
 #Use the git push command to push your local commits to the remote repository. If you are using the default branch (often named main or master), you would use:
 git push origin main
-xxn141yv18P9aSS
+
 # I created a token for this rep (use it for authentication):
-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
+
 
 # a more permanent solution to avoid authentication:
 git config --global credential.helper osxkeychain
